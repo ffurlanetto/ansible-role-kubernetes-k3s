@@ -23,7 +23,7 @@ variables:
     - ansible --version
     - molecule --version
     - docker --version
-    - pip install -r requirements.txt
+    - pip install -r molecule/requirements.txt
   script:
     - molecule test
 
