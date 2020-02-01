@@ -18,7 +18,7 @@
 
 # Example setting host facts using complex arguments
 - name: Retrieve K3S token
-  shell: cat /var/lib/rancher/k3s/server/node-token
+  command: cat /var/lib/rancher/k3s/server/node-token
   args:
     warn: false
   register: k3s_token

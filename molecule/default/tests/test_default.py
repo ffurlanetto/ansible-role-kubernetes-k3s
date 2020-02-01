@@ -1,6 +1,6 @@
 import os
 import json
-from jsonpath_ng import jsonpath, parse
+from jsonpath_ng import parse
 
 
 import testinfra.utils.ansible_runner
@@ -14,7 +14,8 @@ def test_k3s_running_and_enabled(host):
     k3s = host.service("k3s")
     assert k3s.is_running
     assert k3s.is_enabled
- 
+
+
 def test_k3s_nodes_command_output(host):
     command = host.run("k3s kubectl get nodes -o=json")
     jsonResponse = json.loads(command.stdout)
