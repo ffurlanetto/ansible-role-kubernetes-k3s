@@ -1,0 +1,25 @@
+---
+
+- name: Download K3S Install script
+  get_url:
+    url: https://get.k3s.io
+    dest: /tmp/k3s.sh
+    mode: 0777
+
+- name: Install K3S Lightweight Kubernetes server
+  command:  /tmp/k3s.sh
+  args:
+    warn: false
+  notify: restart k3s
+
+- name: Wait for Kubernetes to be ready
+  wait_for:
+    path: /var/lib/rancher/k3s/server/node-token
+
+# Example setting host facts using complex arguments
+- name: Retrieve K3S token
+  shell: cat /var/lib/rancher/k3s/server/node-token
+  args:
+    warn: false
+  register: k3s_token
+  run_once: true

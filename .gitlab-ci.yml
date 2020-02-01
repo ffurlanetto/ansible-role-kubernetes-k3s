@@ -1,0 +1,42 @@
+---
+# Latest official molecule image from Red Hat's registry
+image: quay.io/ansible/molecule:2.22
+
+# Molecule needs to spawn docker container, so we use Docker in Docker(dind)
+services:
+  - docker:dind
+
+# Global variables (applied to all jobs)
+variables:
+  GIT_SSL_NO_VERIFY: "1"
+  ANSIBLE_GATHER_TIMEOUT: "60"
+  PY_COLORS: "1"
+  DOCKER_HOST: "tcp://docker:2375"
+
+.BaseTest:
+  retry: 2
+  stage: test
+  # For debugging, show the versions of each binary
+  before_script:
+    - python --version
+    - pip --version
+    - ansible --version
+    - molecule --version
+    - docker --version
+  script:
+    - molecule test
+
+Ubuntu-1804:
+  extends: .BaseTest
+  variables:
+    MOLECULE_DISTRO: "ubuntu1804"
+
+CentOS-7:
+  extends: .BaseTest
+  variables:
+    MOLECULE_DISTRO: "centos7"
+
+CentOS-8:
+  extends: .BaseTest
+  variables:
+    MOLECULE_DISTRO: "centos8"

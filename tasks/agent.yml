@@ -1,0 +1,16 @@
+---
+
+- name: Download K3S Install script
+  get_url:
+    url: https://get.k3s.io
+    dest: /tmp/k3s.sh
+    mode: 0777
+
+- name: Install K3S Lightweight Kubernetes agent
+  command:  /tmp/k3s.sh
+  environment:
+    K3S_TOKEN: "{{ k3s_token.stdout }}"
+    K3S_URL: "https://{{ groups['k3s_server'][0] }}:6443"
+  args:
+    warn: false
+  notify: restart k3s

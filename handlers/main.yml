@@ -1,0 +1,9 @@
+---
+
+- name: restart k3s
+  service: name=k3s state=restarted
+  when: "'k3s_server' in group_names"
+
+- name: restart k3s
+  service: name=k3s-agent state=restarted
+  when: "'k3s_server' not in group_names"

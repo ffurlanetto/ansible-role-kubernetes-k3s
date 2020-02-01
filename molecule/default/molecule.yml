@@ -1,0 +1,62 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:      
+  - name: instance-master
+    groups:
+      - k3s_server
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest"
+    command: "/lib/systemd/systemd"
+    environment: { container: docker }
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /run/dbus/system_bus_socket:/run/dbus/system_bus_socket:ro
+    privileged: true
+    pre_build_image: true
+    exposed_ports:
+      - 6443/udp
+      - 6443/tcp
+    networks:
+      - name: molecule
+  
+  - name: instance-slave
+    groups:
+      - k3s_agent
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest"
+    command: "/lib/systemd/systemd"
+    environment: { container: docker }
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /run/dbus/system_bus_socket:/run/dbus/system_bus_socket:ro
+    privileged: true
+    pre_build_image: true
+    networks:
+      - name: molecule
+    
+provisioner:
+  name: ansible
+  log: true
+  lint:
+    name: ansible-lint
+scenario:
+  name: default
+  test_sequence:
+    - lint
+    - destroy
+    - dependency
+    - syntax
+    - create
+    - prepare
+    - converge
+    #- idempotence
+    - side_effect
+    - verify
+    - destroy
+verifier:
+  name: testinfra
+  lint:
+    name: flake8

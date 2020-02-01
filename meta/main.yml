@@ -1,0 +1,29 @@
+---
+
+galaxy_info:
+  author: Florian Furlanetto
+  description: This role install K3S on target system
+  company: ADNEOM
+
+  license: See license.md
+
+  min_ansible_version: 2.x
+
+  platforms:
+  - name: CentOS / RHEL
+    versions:
+    - 7
+    - 8
+  - name: Ubuntu
+    versions:
+    - xenial
+    - bionic
+
+  galaxy_tags:
+    - adneom
+    - ffurlanetto
+    - k3s
+    - kubernetes
+    - container
+
+dependencies: []

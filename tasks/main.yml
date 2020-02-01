@@ -1,0 +1,9 @@
+---
+
+# Install K3S Lightweight Kubernetes server
+- include_tasks: server.yml
+  when: "'k3s_server' in group_names"
+
+# Initialize Nodes
+- include_tasks: agent.yml
+  when: "'k3s_server' not in group_names"
