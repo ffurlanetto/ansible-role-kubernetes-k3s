@@ -2,6 +2,7 @@
 
 # Disable SWAP
 - include_tasks: swap.yml
+  when: k3s_disable_swap == 'true'
 
 # Install dependencies
 - name: Install dependencies

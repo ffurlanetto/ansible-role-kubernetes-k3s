@@ -3,3 +3,5 @@
   hosts: all
   roles:
     - role: ansible-role-kubernetes-k3s
+      vars:
+        k3s_disable_swap: false
