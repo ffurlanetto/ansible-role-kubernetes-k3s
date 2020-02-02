@@ -23,7 +23,7 @@ variables:
     - ansible --version
     - molecule --version
     - docker --version
-    - pip install -r molecule/requirements.txt
+    - pip install --upgrade jsonpath-ng
   script:
     - molecule test
 
